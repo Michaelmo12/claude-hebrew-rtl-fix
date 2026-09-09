@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Hebrew RTL Fix — Local Test Fixture</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; line-height: 1.6; }
+  main { border: 1px solid #ccc; border-radius: 8px; padding: 16px 24px; }
+  h1 { font-size: 18px; }
+  section { margin-bottom: 24px; }
+  h2 { font-size: 14px; color: #555; text-transform: uppercase; }
+  textarea, [contenteditable] { display: block; width: 100%; min-height: 60px; box-sizing: border-box; border: 1px solid #999; border-radius: 4px; padding: 8px; font-size: 14px; }
+  code, pre { background: #f4f4f4; }
+</style>
+</head>
+<body>
+<h1>Hebrew RTL Fix — Local Test Fixture</h1>
+<p>No claude.ai dependency. Load this extension unpacked in Firefox, then temporarily
+add <code>"http://localhost:*/*"</code> or <code>"file:///*"</code> to
+<code>manifest.json</code>'s <code>content_scripts.matches</code> (dev-only —
+revert before packaging) to exercise it against this page.</p>
+
+<main>
+  <section>
+    <h2>1. Hebrew paragraph with trailing punctuation</h2>
+    <p>שלום, מה שלומך היום? אני מקווה שהכל בסדר.</p>
+  </section>
+
+  <section>
+    <h2>2. Hebrew paragraph with embedded English/code terms</h2>
+    <p>אני משתמש ב-C++ ובמודל GPT-4 כדי לכתוב קוד, וגרסה v1.1 כבר יצאה.</p>
+  </section>
+
+  <section>
+    <h2>3. Hebrew unordered list</h2>
+    <ul>
+      <li>פריט ראשון ברשימה</li>
+      <li>פריט שני, עם קצת אנגלית כמו Node.js</li>
+      <li>פריט שלישי וסיום.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>4. Hebrew ordered list</h2>
+    <ol>
+      <li>שלב אחד</li>
+      <li>שלב שתיים</li>
+      <li>שלב שלוש</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>5. Code block containing Hebrew (must stay LTR)</h2>
+    <pre><code>// תגובה בעברית בתוך קוד
+const greeting = "שלום עולם";
+console.log(greeting);</code></pre>
+  </section>
+
+  <section>
+    <h2>6. Composer stand-ins (type Hebrew here for v1.1 live-direction check)</h2>
+    <div contenteditable="true" data-testid="composer-contenteditable"></div>
+    <br />
+    <textarea placeholder="Type Hebrew here too"></textarea>
+  </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Hebrew RTL Fix for Claude",
+  "description": "Fixes Hebrew/RTL rendering on claude.ai: right-aligned replies, correct punctuation placement, isolated English/code terms, right-side list bullets, and a live-direction composer. Zero network requests, zero dependencies, zero data collection.",
+  "version": "1.0.0",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "hebrew-rtl-fix@claude-helper.local",
+      "strict_min_version": "109.0"
+    }
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png",
+    "128": "icons/icon-128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://claude.ai/*"],
+      "css": ["styles/content.css"],
+      "js": [
+        "content/detect.js",
+        "content/bdi-wrap.js",
+        "content/apply-styles.js",
+        "content/composer.js",
+        "content/observer.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

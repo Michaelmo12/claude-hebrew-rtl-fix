@@ -1,0 +1,44 @@
+/* content.css — static rules only. No @import, no url(), no external
+   fonts: this stylesheet cannot make network requests. */
+
+/* Detected Hebrew-dominant blocks: right-align and let the browser's own
+   bidi algorithm place punctuation correctly (see README for why
+   unicode-bidi: isolate + explicit direction, rather than dir="auto" or
+   manual character reordering, is the actual fix). */
+.hrtl-hebrew-block {
+  direction: rtl;
+  unicode-bidi: isolate;
+  text-align: right;
+}
+
+/* Lists are tagged as a whole unit by apply-styles.js when their aggregate
+   text is Hebrew-dominant, so the list flips consistently rather than each
+   item flipping independently. Setting direction: rtl on <ul>/<ol> is
+   natively sufficient to move markers to the right — no custom bullet
+   replacement needed. */
+.hrtl-hebrew-block ul,
+.hrtl-hebrew-block ol,
+.hrtl-hebrew-block li {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Code blocks must never visually flip, even nested inside a Hebrew block
+   (direction inherits into descendants by default). !important is used
+   deliberately here — the one place in this stylesheet — so this wins over
+   any inline style or scoped class a syntax highlighter may add. */
+.hrtl-hebrew-block pre,
+.hrtl-hebrew-block code,
+.hrtl-hebrew-block pre *,
+.hrtl-hebrew-block code * {
+  direction: ltr !important;
+  unicode-bidi: normal !important;
+  text-align: left !important;
+}
+
+/* Latin/tech-term islands wrapped by bdi-wrap.js. dir="ltr" is already set
+   inline on each <bdi>; this just prevents them from ever picking up
+   right-aligned text-align from an RTL ancestor's inline flow. */
+.hrtl-hebrew-block bdi {
+  unicode-bidi: isolate;
+}

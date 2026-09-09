@@ -1,0 +1,12 @@
+{
+  "name": "claude-hebrew-rtl-fix",
+  "version": "1.0.0",
+  "description": "Firefox extension that fixes Hebrew/RTL rendering on claude.ai. Zero network requests, zero dependencies, zero data collection.",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "icons": "node icons/generate-icons.js",
+    "build": "node build.js",
+    "lint": "npx web-ext lint --source-dir=."
+  }
+}

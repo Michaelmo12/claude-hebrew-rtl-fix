@@ -35,14 +35,33 @@ grep -rniE "fetch\(|XMLHttpRequest|WebSocket|sendBeacon" content/ styles/
 
 claude.ai's exact DOM structure (class names, `data-testid` attributes, whether the composer is `contenteditable` or a `<textarea>`) can change between deploys and wasn't inspected live while building this. All claude.ai-specific selectors live in one place — the `SELECTORS` constant at the top of `content/apply-styles.js` — with generic structural fallbacks so the extension still works before tuning. If something doesn't target correctly after installing, that's the file to check first (and PRs welcome).
 
-## Installing (unpacked, for now)
+## Installing
+
+### Quick way: temporary add-on (any Firefox, gone on restart)
 
 1. Clone this repo.
 2. In Firefox, go to `about:debugging#/runtime-this-firefox`.
 3. Click **Load Temporary Add-on** and select `manifest.json`.
 4. Open claude.ai and send/receive a Hebrew message.
 
-(This is a "temporary add-on" — it's removed when Firefox restarts. A signed AMO release is planned; see `browser_specific_settings.gecko.id` in `manifest.json`, which currently holds a placeholder.)
+This is removed every time Firefox restarts, so it's fine for a quick try but not for daily use.
+
+### Persistent install: Firefox Developer Edition / Nightly / ESR (survives restarts, no `about:debugging`)
+
+Release Firefox only runs extensions signed by Mozilla (AMO). **Developer Edition, Nightly, and unbranded ESR builds** let you disable that check and install an unsigned `.xpi` permanently through the normal `about:addons` UI instead:
+
+1. Build the package:
+   ```sh
+   npm run build
+   ```
+   This produces `dist/claude-hebrew-rtl-fix-v<version>.xpi`.
+2. In Firefox Developer Edition, go to `about:config`, accept the risk warning, search for `xpinstall.signatures.required`, and set it to `false`. (This pref doesn't exist / can't be flipped on release Firefox — that's expected and by design on Mozilla's part.)
+3. Go to `about:addons` → the gear icon (⚙) → **Install Add-on From File...** → select the `.xpi`.
+4. It now installs like any other extension and stays installed across restarts, updates, etc. — no need to reload it from `about:debugging` again.
+
+Since step 2 turns off signature verification for *all* extensions, only do this on a profile/build you use for development, and only install `.xpi` files you've built yourself or otherwise trust.
+
+A properly signed AMO release (installable on release Firefox with no config changes) is the eventual goal; see `browser_specific_settings.gecko.id` in `manifest.json`, which currently holds a placeholder pending actual submission.
 
 ## Testing locally without claude.ai
 

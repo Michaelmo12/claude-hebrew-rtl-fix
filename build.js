@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 /**
- * build.js — regenerates icons, then zips the extension for AMO submission
- * into dist/claude-hebrew-rtl-fix-v<version>.zip.
+ * build.js — regenerates icons, then packages the extension into:
+ *   - dist/claude-hebrew-rtl-fix-v<version>.zip  (for AMO submission)
+ *   - dist/claude-hebrew-rtl-fix-v<version>.xpi  (same bytes, .xpi
+ *     extension — for permanent install via about:addons > Install Add-on
+ *     From File on Firefox Developer Edition/Nightly/ESR with
+ *     xpinstall.signatures.required disabled; see README)
  *
  * Uses PowerShell's built-in Compress-Archive (this is a Windows dev
  * machine) instead of adding an npm zip dependency, keeping the build
@@ -49,7 +53,9 @@ function main() {
 
   if (!fs.existsSync(DIST)) fs.mkdirSync(DIST);
   const zipPath = path.join(DIST, `claude-hebrew-rtl-fix-v${version}.zip`);
+  const xpiPath = path.join(DIST, `claude-hebrew-rtl-fix-v${version}.xpi`);
   if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath);
+  if (fs.existsSync(xpiPath)) fs.unlinkSync(xpiPath);
 
   // Compress-Archive flattens every -Path entry to the zip root, which
   // would put icons/icon-16.png etc. at the root instead of under icons/
@@ -72,7 +78,12 @@ function main() {
 
   fs.rmSync(STAGE, { recursive: true, force: true });
 
+  // An .xpi is just a zip with a different extension — copy rather than
+  // re-zip, so both artifacts are byte-identical.
+  fs.copyFileSync(zipPath, xpiPath);
+
   console.log(`Built: ${zipPath}`);
+  console.log(`Built: ${xpiPath}`);
 }
 
 main();
